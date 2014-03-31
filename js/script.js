@@ -12,11 +12,11 @@ var fightMode = false; //This makes you fight. While you fight, no time goes by.
 var pots = 0; //Pots is short for potions. If you have potions, you can use them to regain life.
 var newInv = []; //Used in the autocomplete function
 var autoInv = []; //Used in the autocomplete function
-var homeRaw = ["inv agave leaf", "move to cave", "move to generator", "examine agave leaf"];//Autocomplete functions for home
-var generatorRaw = ["move to home", "inv banana", "examine generator","move to waterfall"];
-var caveRaw = ["explore the cave", "move to waterfall", "move to home"];
-var waterfallRaw = ["move to home","move to generator","move to cave","move to bank","drink water","fill bottle"];
-var bankRaw = ["move to home","move to waterfall" ];// still needs addition...
+var homeRaw = ["inv agave leaf", "move to cave", "move to generator", "examine agave leaf", "drink water", "inv bottle", "show inv"];//Autocomplete functions for home
+var generatorRaw = ["move to home", "inv banana", "examine generator","move to waterfall", "repair generator", "drink water", "show inv"];
+var caveRaw = ["explore the cave", "move to waterfall", "move to home", "show inv"];
+var waterfallRaw = ["move to home","move to generator","move to cave","move to bank", "show inv", "drink water","fill bottle", "wash"];
+var bankRaw = ["move to home","move to waterfall", "fix boat", "show inv", "examine boat", "drink water", "fish" ];// still needs addition...
 var lastText = "";//Used in the clear command
 var staticAutoInv = ["look around", "jump", "quit", "clear"]
 var water = 5; //if zero you die and the game ends
@@ -301,6 +301,12 @@ function printGameOver(status) {
 
 //Adds an item to the inventory array.
 function addInv(string,item,weapon,damage){
+	for(var x = 0;x<inv.length;x++){
+		if(inv[x]===item){
+			addText("You already have that item in inventory.");
+			return;
+		}
+	}
 	if (inv.length < 10) {
         inv.push(item);
         //Updates autocomplete tags
@@ -520,6 +526,9 @@ function moveToHome() {
 			//Static case statements
 			case "jump":
 				addText("You jump up for some reason you don't really know. You get some pretty nice air, and you see that there is an island right next to the one your on in the south.");
+				addText("By jumping you catch a reflexion off something in the distance.");
+				addText("You jump again and now you are sure that something is behind a rock partly buried in the sand.");
+				addText("You approach the thing and notice that it is a plastic bottle, something definitely worth stashing in inventory!");
 				timeCheck();
 			break;
 			case "clear":
@@ -587,8 +596,6 @@ function moveToCave() {
 			timeCheck();
 			break;
 		case "explore the cave":
-			$("#main").empty();
-			addTextNoLast(lastText);
 			addText("You uncomfortably keep yourself on the sides of the cave - since you really don't know what's inside of it - and with each step that you take, light fades away quickly into the darkness behind you. As you move along (by touching the walls and figuring out what to do), you stumble upon something; It seems to be a big pile of rocks blocking your way further! You stop and survey the pile of rocks, then notice a piece of cloth buried underneath.");
 			addText("Curiously, you remove the rocks to find out what is beneath. And as you dug your way through the pile, you noticed that you were no longer holding rocks in your hands! You turned around to catch more light and realized that you were holding some bones in your hands - you found a human skeleton scattered beneath your feet!");
 			addText("Feeling a sudden despair and fear fly through your head, you want to instinctively run, but you overcome your fear and turn back facing the skeleton. Then a shiny thing catches your attention and you rush to check what it is!");
@@ -675,7 +682,7 @@ function moveToCave() {
 		default:
 			//Checks to see if user's input is 'inv screwdriver' when first visiting. If so, it prints
 			//"Misunderstood command".
-			if(user === "inv screwdriver" && firstVisit = true) {
+			if(user === "inv screwdriver" && firstVisit === true) {
 			
 			//If the user typed none of the above, logs "Misunderstood command."
 			addTextNoLast("Misunderstood command.");
@@ -717,7 +724,7 @@ function moveToWaterfall() {
 	    break;
             case "fill bottle":
                         if(checkForItem("bottle") === true) {
-                            remItem(bottle);
+                            remItem("bottle");
                             addInv("filled a bottle.", "full_bottle", false, 0);
                         }  else{
                             addText("You don't have a bottle to fill.")
@@ -784,7 +791,7 @@ function moveToWaterfall() {
 		break;
 	    case "move to bank":
 		displayImage(imgLoc.bank, imgLoc.ID);
-		addText("You walk your way to the eastern bank of the island, distant image of the boat begins to be clearer. When you arrive at the bank, the condition of the boat does not impress you too much, there will be some repairing needed.");
+		addText("You walk your way to the eastern bank of the island, distant image of the boat begins to be clearer. When you arrive at the bank, the condition of themove to home boat does not impress you too much, there will be some repairing needed.");
 		currentPlace = "bank";
 		firstVisit = false;
 		timeCheck();
@@ -1012,8 +1019,9 @@ $(document).keydown(function(key) {
 //Emails:
 //deluz@esedona.net - Gabriel de Luz (JS Dev)
 //mstaveleytaylor@gmail.com - Matthew Taylor (Project leader)
-//bobbie.rausch@icloud.com - Bram R. (JS dev)
+//bobbiy.bram@gmail.com - Bram R. (JS dev)
 //amritaclehane@gmail.com - Armita C. (JS Dev)
 //adam@adambanky.com - Adam Banky (JS Dev & Lead designer)
 //khalildacoder@gmail.com - Khalil (Assistant Designer)
 //yazidnoned@hotmail.com - Yazid (JS Dev)
+//goggy25@gmail.com - fundocro (JS Dev, Assistant Designer)
