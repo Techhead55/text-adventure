@@ -1,0 +1,11 @@
+{
+	"manifest_version": 2,
+	"name": "A Text Adventure",
+    "description": "A game by 8BIT, a group from codecademy beginners. In A Text Adventure you will fight to outlast the night and survive against the odds, will you be successful?",
+	"version": "0.1",
+	"app": {
+	"background": {
+		"scripts": ["app.js"]
+	}
+}
+}
